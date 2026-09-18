@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import BuildYourGiftCard from "./BuildYourGiftCard";
 import LogoMarquee from "./LogoMarquee";
@@ -97,6 +98,9 @@ const contentZoneClass = `
 const eyebrowBase =
   "text-[0.68rem] tracking-[0.18em] uppercase text-[#6b6b6b] font-medium";
 
+const announcementPillClass =
+  "inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#fffdfa]/80 px-4 py-2 text-[0.78rem] font-medium text-[#1a1a1a] no-underline transition duration-200 hover:border-black/20 hover:-translate-y-px";
+
 const headlineClass = `
   font-medium text-[clamp(2.25rem,3.2vw,2.75rem)] leading-[1.15] tracking-[-0.01em] mb-4
   max-[1200px]:text-[clamp(2rem,4vw,2.4rem)]
@@ -179,6 +183,18 @@ const Hero = () => {
   return (
     <section className={heroSectionClass}>
       <div className={contentZoneClass}>
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Link to="/brand-your-products" className={`${announcementPillClass} mb-5`}>
+            <span aria-hidden="true">🎁</span>
+            Try your brand &amp; logo on our products
+            <span aria-hidden="true">→</span>
+          </Link>
+        </motion.div>
+
         <p className={`${eyebrowBase} mb-3`}>CORPORATE GIFTING</p>
         <h1 className={headlineClass}>
           Thoughtful gifts
