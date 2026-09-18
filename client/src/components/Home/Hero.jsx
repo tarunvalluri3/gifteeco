@@ -58,20 +58,18 @@ const PRODUCTS = [
 const ROTATE_INTERVAL_MS = 2100;
 
 const getProductVariants = (tilt = 0) => ({
-  initial: { opacity: 0, y: 26, scale: 0.9, rotate: tilt - 3 },
+  initial: { opacity: 0, scale: 0.97, rotate: tilt },
   animate: {
     opacity: 1,
-    y: 0,
     scale: 1,
     rotate: tilt,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
   exit: {
     opacity: 0,
-    y: -20,
-    scale: 0.94,
-    rotate: tilt - 2,
-    transition: { duration: 0.3, ease: "easeIn" },
+    scale: 0.98,
+    rotate: tilt,
+    transition: { duration: 0.35, ease: "easeIn" },
   },
 });
 
@@ -100,9 +98,9 @@ const eyebrowBase =
   "text-[0.68rem] tracking-[0.18em] uppercase text-[#6b6b6b] font-medium";
 
 const announcementPillClass =
-  "inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#fffdfa]/80 px-4 py-2 text-[0.78rem] font-medium text-[#1a1a1a] no-underline transition duration-200 hover:border-black/20 hover:-translate-y-px";
+  "inline-flex items-center gap-3 rounded-[6px] border border-black/[0.10] bg-white/35 px-4 py-2.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-[#3f3b39] backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:border-[#6f1d2a]/30 hover:text-[#6f1d2a]";
 
-const headlineClass = `
+  const headlineClass = `
   font-medium text-[clamp(2.25rem,3.2vw,2.75rem)] leading-[1.15] tracking-[-0.01em] mb-4
   max-[1200px]:text-[clamp(2rem,4vw,2.4rem)]
   max-[760px]:text-[clamp(1.75rem,6vw,2.1rem)]
@@ -152,6 +150,52 @@ const PlayIcon = () => (
   </svg>
 );
 
+// Right-side animated use-case strip, aligned with BuildYourGiftCard below it.
+const USE_CASES = ["EMPLOYEES", "CLIENTS", "EVENTS", "FESTIVALS"];
+const USE_CASE_INTERVAL_MS = 2600;
+
+const useCaseWrapClass = `
+  absolute top-[calc(clamp(300px,37vh,400px)-84px)] right-[clamp(24px,5.5vw,90px)] w-[clamp(288px,21.6vw,352px)] z-[3]
+  max-[1200px]:top-[calc(50vh-84px)] max-[1200px]:right-[4vw] max-[1200px]:w-[clamp(256px,27.2vw,304px)]
+  max-[760px]:static max-[760px]:inset-auto max-[760px]:w-full max-[760px]:max-w-[336px] max-[760px]:ml-auto max-[760px]:mb-5
+`;
+
+const useCaseHeadingClass =
+  "text-[0.6rem] tracking-[0.2em] uppercase text-[#8a8a8a] font-medium mb-1.5";
+
+const useCaseWordClass =
+  "text-[0.8rem] font-medium text-[#1a1a1a]";
+
+const UseCaseStrip = () => {
+  const shouldReduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveIndex((i) => (i + 1) % USE_CASES.length);
+    }, USE_CASE_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className={useCaseWrapClass}>
+      <p className={useCaseHeadingClass}>CUSTOM GIFTS FOR</p>
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={USE_CASES[activeIndex]}
+          className={useCaseWordClass}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={shouldReduceMotion ? undefined : { opacity: 0, y: -4 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {USE_CASES[activeIndex]}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -191,8 +235,8 @@ const Hero = () => {
         >
           <Link to="/brand-your-products" className={`${announcementPillClass} mb-5`}>
             <span aria-hidden="true">🎁</span>
-            Try your brand &amp; logo on our products
-            <span aria-hidden="true">→</span>
+            Personalize your gifts!
+            <span aria-hidden="true"></span>
           </Link>
         </motion.div>
 
@@ -254,7 +298,7 @@ const Hero = () => {
               animate="animate"
               exit="exit"
             >
-              <motion.img
+              <img
                 src={active.src}
                 alt={active.alt}
                 width={active.width}
@@ -264,19 +308,13 @@ const Hero = () => {
                 className={`${productImgBase} ${active.imgSize} ${
                   active.blend ? "mix-blend-multiply" : ""
                 }`}
-                animate={shouldReduceMotion ? { y: 0 } : { y: [0, -6, 0] }}
-                transition={{
-                  duration: 5.5,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
               />
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
+      <UseCaseStrip />
       <BuildYourGiftCard />
 
       <div className={trustedZoneClass}>
