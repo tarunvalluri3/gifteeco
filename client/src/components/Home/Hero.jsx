@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import BuildYourGiftCard from "./BuildYourGiftCard";
 import LogoMarquee from "./LogoMarquee";
+import ProductAnnotation from "./ProductAnnotation";
 
 const PRODUCTS = [
   {
@@ -221,6 +222,8 @@ const Hero = () => {
           </button>
         </div>
       </div>
+
+      <ProductAnnotation productId={active.id} />
 
       <div className={productZoneClass} {...pauseHandlers}>
         <div className={productFrameClass}>
