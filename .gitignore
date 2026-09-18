@@ -1,0 +1,135 @@
+# ================================
+
+# CLIENT
+
+# ================================
+
+/client/node_modules/
+/client/.env
+/client/.env.*
+/client/.env.local
+/client/.env.development
+/client/.env.development.local
+/client/.env.test
+/client/.env.test.local
+/client/.env.production
+/client/.env.production.local
+
+/client/dist/
+/client/build/
+/client/.vite/
+
+# ================================
+
+# SERVER
+
+# ================================
+
+/server/node_modules/
+/server/.env
+/server/.env.*
+/server/.env.local
+/server/.env.development
+/server/.env.development.local
+/server/.env.test
+/server/.env.test.local
+/server/.env.production
+/server/.env.production.local
+
+/server/dist/
+/server/build/
+/server/uploads/
+
+# ================================
+
+# ROOT
+
+# ================================
+
+/node_modules/
+/.env
+/.env.*
+/.env.local
+/.env.development
+/.env.development.local
+/.env.test
+/.env.test.local
+/.env.production
+/.env.production.local
+
+# ================================
+
+# LOGS
+
+# ================================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ================================
+
+# BUILD / CACHE
+
+# ================================
+
+dist/
+build/
+coverage/
+.nyc_output/
+.cache/
+.vite/
+.parcel-cache/
+.next/
+out/
+
+# ================================
+
+# TESTING
+
+# ================================
+
+playwright-report/
+test-results/
+
+# ================================
+
+# DATABASE / LOCAL FILES
+
+# ================================
+
+*.sqlite
+*.sqlite3
+*.db
+
+# ================================
+
+# IDE / EDITOR
+
+# ================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ================================
+
+# OS FILES
+
+# ================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+
+# TYPESCRIPT
+
+# ================================
+
+*.tsbuildinfo
