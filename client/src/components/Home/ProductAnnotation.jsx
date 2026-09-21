@@ -24,13 +24,8 @@ const ANNOTATIONS = {
   },
 };
 
-// Positioned relative to the hero's own horizontal center (not the product
-// frame, whose width varies per product) so it never shifts between products.
-const wrapClass = `
-  absolute z-[2] top-[21%] left-[calc(50%-403px)] pointer-events-none
-  max-[1200px]:left-[calc(50%-331px)] max-[1200px]:top-[19%]
-  max-[760px]:hidden
-`;
+// In-flow above the product frame, left-aligned to its column.
+const wrapClass = "self-start pointer-events-none mb-2";
 
 const ruleRowClass = "flex items-center gap-2 mb-1.5";
 

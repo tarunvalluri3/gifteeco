@@ -80,19 +80,23 @@ const reducedProductVariants = {
 };
 
 // Shared Tailwind class strings, kept as named constants for readable JSX.
+// Layout is a flow-based grid (no vh/vw-offset absolute positioning):
+// 1 column < 768px, 2 columns 768-1279px, 3 columns 1280px+.
 const heroSectionClass = `
-  relative bg-[#f5f1ea] text-[#1a1a1a] [font-family:Inter,sans-serif]
-  h-[clamp(760px,100vh,1000px)] overflow-hidden
-  max-[1200px]:h-auto max-[1200px]:min-h-[1200px] max-[1200px]:pb-12
-  max-[760px]:h-auto max-[760px]:min-h-screen max-[760px]:overflow-visible
-  max-[760px]:pt-6 max-[760px]:px-5 max-[760px]:pb-10
+  relative flex flex-col bg-[#f5f1ea] text-[#1a1a1a] [font-family:Inter,sans-serif]
+  min-h-[max(720px,100svh)]
 `;
 
-const contentZoneClass = `
-  absolute left-[clamp(24px,5.5vw,90px)] bottom-[clamp(150px,20vh,230px)] max-w-[620px] z-[3]
-  max-[1200px]:bottom-[16vh] max-[1200px]:max-w-[480px]
-  max-[760px]:static max-[760px]:inset-auto max-[760px]:w-auto max-[760px]:max-w-none max-[760px]:my-6
+const heroGridClass = `
+  flex-1 w-full max-w-[1600px] mx-auto grid grid-cols-1 gap-x-8 gap-y-10
+  px-[clamp(20px,5.5vw,90px)] pt-24 pb-10
+  max-md:pt-20
+  md:grid-cols-2 md:grid-rows-[1fr_auto] md:gap-y-6 md:pb-12
+  xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,0.85fr)]
 `;
+
+const contentZoneClass =
+  "md:col-start-1 md:row-start-1 md:self-center max-w-[620px]";
 
 const eyebrowBase =
   "text-[0.68rem] tracking-[0.18em] uppercase text-[#6b6b6b] font-medium";
@@ -101,64 +105,45 @@ const announcementPillClass =
   "inline-flex items-center gap-3 rounded-[6px] border border-black/[0.10] bg-white/35 px-4 py-2.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-[#3f3b39] backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:border-[#6f1d2a]/30 hover:text-[#6f1d2a]";
 
   const headlineClass = `
-  font-medium text-[clamp(2.25rem,3.2vw,2.75rem)] leading-[1.15] tracking-[-0.01em] mb-4
-  max-[1200px]:text-[clamp(2rem,4vw,2.4rem)]
-  max-[760px]:text-[clamp(1.75rem,6vw,2.1rem)]
+  font-medium text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.15] tracking-[-0.01em] mb-4
 `;
 
 const descClass =
   "text-[0.95rem] leading-[1.6] text-[#6b6b6b] max-w-[30rem] mb-6";
 
-const ctasClass =
-  "flex items-center gap-5 flex-wrap max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-4";
+const ctasClass = "flex items-center gap-5 flex-wrap";
 
 const btnPrimaryBase =
   "inline-flex items-center justify-center gap-[0.6rem] bg-[#1a1a1a] text-white rounded-full font-medium no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px";
 
-const watchClass =
-  "inline-flex items-center gap-3 bg-transparent border-none cursor-pointer text-[0.85rem] text-[#1a1a1a] p-0";
-
-const playDotClass =
-  "inline-flex items-center justify-center w-8 h-8 rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.1)] text-[#1a1a1a]";
-
-const productZoneClass = `
-  absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 z-[2] isolate
-  max-[1200px]:top-[40%]
-  max-[760px]:static max-[760px]:inset-auto max-[760px]:translate-x-0 max-[760px]:translate-y-0 max-[760px]:w-auto max-[760px]:max-w-none max-[760px]:z-auto
-`;
+const productZoneClass =
+  "relative isolate flex flex-col md:col-start-2 md:row-start-1 md:self-center";
 
 const productFrameClass = `
-  relative h-[clamp(420px,55vh,640px)] flex items-center justify-center
-  max-[1200px]:h-[clamp(340px,42vh,420px)]
-  max-[760px]:h-[clamp(260px,60vw,340px)] max-[760px]:mx-auto
+  relative flex items-center justify-center
+  h-[clamp(300px,70vw,380px)]
+  md:h-[clamp(420px,52vh,560px)]
 `;
 
-const productImgBase = "block w-auto object-contain mx-auto";
+const sideStackClass = `
+  flex flex-col gap-5 w-full max-w-[352px]
+  md:col-start-2 md:row-start-2 md:justify-self-center
+  xl:col-start-3 xl:row-start-1 xl:self-center xl:justify-self-end
+`;
+
+const productImgBase = "block w-auto max-h-full object-contain mx-auto";
 
 const shadowClass =
   "absolute bottom-[4%] left-1/2 -translate-x-1/2 w-[46%] h-[34px] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.3),transparent_70%)] blur-[8px] z-0";
 
-const trustedZoneClass = `
-  absolute left-[clamp(24px,5.5vw,90px)] bottom-[clamp(40px,6vh,64px)] max-w-[560px] z-[3]
-  max-[1200px]:bottom-[3vh]
-  max-[760px]:static max-[760px]:inset-auto max-[760px]:max-w-none max-[760px]:z-auto
-`;
-
-const PlayIcon = () => (
-  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-    <polygon points="1,0 10,5 1,10" fill="currentColor" />
-  </svg>
-);
+const trustedZoneClass =
+  "max-w-[560px] md:col-start-1 md:row-start-2 md:self-end";
 
 // Right-side animated use-case strip, aligned with BuildYourGiftCard below it.
 const USE_CASES = ["EMPLOYEES", "CLIENTS", "EVENTS", "FESTIVALS"];
 const USE_CASE_INTERVAL_MS = 2600;
 
-const useCaseWrapClass = `
-  absolute top-[calc(clamp(300px,37vh,400px)-84px)] right-[clamp(24px,5.5vw,90px)] w-[clamp(288px,21.6vw,352px)] z-[3]
-  max-[1200px]:top-[calc(50vh-84px)] max-[1200px]:right-[4vw] max-[1200px]:w-[clamp(256px,27.2vw,304px)]
-  max-[760px]:static max-[760px]:inset-auto max-[760px]:w-full max-[760px]:max-w-[336px] max-[760px]:ml-auto max-[760px]:mb-5
-`;
+const useCaseWrapClass = "w-full";
 
 const useCaseHeadingClass =
   "text-[0.6rem] tracking-[0.2em] uppercase text-[#8a8a8a] font-medium mb-1.5";
@@ -227,6 +212,7 @@ const Hero = () => {
 
   return (
     <section className={heroSectionClass}>
+      <div className={heroGridClass}>
       <div className={contentZoneClass}>
         <motion.div
           initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
@@ -252,24 +238,17 @@ const Hero = () => {
         </p>
 
         <div className={ctasClass}>
-          <a
-            href="#"
+          <Link
+            to="/products"
             className={`${btnPrimaryBase} px-[1.3rem] py-[0.65rem] text-[0.8rem]`}
           >
             Explore Collection <span aria-hidden="true">→</span>
-          </a>
-          <button type="button" className={watchClass}>
-            <span className={playDotClass} aria-hidden="true">
-              <PlayIcon />
-            </span>
-            Watch our story
-          </button>
+          </Link>
         </div>
       </div>
 
-      <ProductAnnotation productId={active.id} />
-
       <div className={productZoneClass} {...pauseHandlers}>
+        <ProductAnnotation productId={active.id} />
         <div className={productFrameClass}>
           <motion.div
             className={shadowClass}
@@ -288,7 +267,7 @@ const Hero = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
-              className="relative z-[1]"
+              className="relative z-[1] h-full flex items-center"
               variants={
                 shouldReduceMotion
                   ? reducedProductVariants
@@ -314,14 +293,17 @@ const Hero = () => {
         </div>
       </div>
 
-      <UseCaseStrip />
-      <BuildYourGiftCard />
+      <div className={sideStackClass}>
+        <UseCaseStrip />
+        <BuildYourGiftCard />
+      </div>
 
       <div className={trustedZoneClass}>
         <p className={`${eyebrowBase} mb-[1.1rem]`}>
           TRUSTED BY MODERN BUSINESSES
         </p>
         <LogoMarquee />
+      </div>
       </div>
     </section>
   );

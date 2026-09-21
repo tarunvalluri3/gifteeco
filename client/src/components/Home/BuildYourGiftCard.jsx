@@ -1,19 +1,37 @@
+import { useId, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const FIELDS = [
-  { label: "Who are you gifting for?", value: "Employees" },
-  { label: "Quantity", value: "100 – 250" },
-  { label: "Budget per person", value: "₹1,000 – ₹2,500" },
-  { label: "Preferred category", value: "Drinkware" },
+  {
+    name: "audience",
+    label: "Who are you gifting for?",
+    options: ["Employees", "Clients", "Events", "Festivals"],
+  },
+  {
+    name: "quantity",
+    label: "Quantity",
+    options: ["Under 50", "50 – 100", "100 – 250", "250 – 500", "500+"],
+  },
+  {
+    name: "budget",
+    label: "Budget per person",
+    options: ["Under ₹1,000", "₹1,000 – ₹2,500", "₹2,500 – ₹5,000", "₹5,000+"],
+  },
+  {
+    name: "category",
+    label: "Preferred category",
+    options: ["Drinkware", "Apparel", "Bags", "Stationery", "Desk accessories"],
+  },
 ];
 
-// Positioned zone + card sizing, ~20% smaller (width and effective height,
-// via reduced padding/gaps/font sizes) than the original card for a more
-// compact, minimal footprint.
-const cardZoneClass = `
-  absolute top-[clamp(300px,37vh,400px)] right-[clamp(24px,5.5vw,90px)] w-[clamp(288px,21.6vw,352px)] z-[3]
-  [font-family:Inter,sans-serif]
-  max-[1200px]:top-[50vh] max-[1200px]:right-[4vw] max-[1200px]:w-[clamp(256px,27.2vw,304px)]
-  max-[760px]:static max-[760px]:inset-auto max-[760px]:w-full max-[760px]:max-w-[336px] max-[760px]:mx-auto max-[760px]:mb-8
-`;
+const DEFAULTS = {
+  audience: "Employees",
+  quantity: "100 – 250",
+  budget: "₹1,000 – ₹2,500",
+  category: "Drinkware",
+};
+
+const cardZoneClass = "w-full [font-family:Inter,sans-serif]";
 
 const cardClass =
   "bg-[#fffdfa] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] px-5 py-5 w-full";
@@ -27,7 +45,7 @@ const fieldsClass = "flex flex-col gap-[0.68rem] mb-5";
 const fieldLabelClass = "block text-[0.6rem] text-[#6b6b6b] mb-1";
 
 const fieldControlClass =
-  "flex items-center justify-between border border-[#e2ddd2] rounded-lg px-3 py-2 text-[0.74rem] text-[#1a1a1a]";
+  "block w-full appearance-none bg-transparent border border-[#e2ddd2] rounded-lg pl-3 pr-8 py-2 text-[0.74rem] text-[#1a1a1a] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6f1d2a]";
 
 const btnClass =
   "inline-flex items-center justify-center gap-[0.6rem] bg-[#1a1a1a] text-white rounded-full font-medium no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px px-[1.44rem] py-[0.76rem] text-[0.72rem] w-full";
@@ -63,38 +81,71 @@ const ShieldIcon = () => (
   </svg>
 );
 
-const BuildYourGiftCard = () => (
-  <div className={cardZoneClass}>
-    <div className={cardClass}>
-      <h3 className={cardTitleClass}>Build your gift</h3>
-      <p className={cardSubClass}>
-        Get personalized recommendations in seconds.
-      </p>
+const BuildYourGiftCard = () => {
+  const navigate = useNavigate();
+  const idPrefix = useId();
+  const [values, setValues] = useState(DEFAULTS);
 
-      <div className={fieldsClass}>
-        {FIELDS.map((f) => (
-          <div key={f.label}>
-            <label className={fieldLabelClass}>{f.label}</label>
-            <div className={fieldControlClass}>
-              <span>{f.value}</span>
-              <span className="text-[#6b6b6b] shrink-0">
-                <ChevronIcon />
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate({
+      pathname: "/build-your-own-kit",
+      search: new URLSearchParams(values).toString(),
+    });
+  };
 
-      <button type="button" className={btnClass}>
-        Get Recommendations <span aria-hidden="true">→</span>
-      </button>
+  return (
+    <div className={cardZoneClass}>
+      <form className={cardClass} onSubmit={handleSubmit}>
+        <h3 className={cardTitleClass}>Build your gift</h3>
+        <p className={cardSubClass}>
+          Get personalized recommendations in seconds.
+        </p>
 
-      <p className={cardNoteClass}>
-        <ShieldIcon />
-        No obligation. Just better gifting ideas.
-      </p>
+        <div className={fieldsClass}>
+          {FIELDS.map((f) => {
+            const id = `${idPrefix}-${f.name}`;
+            return (
+              <div key={f.name}>
+                <label htmlFor={id} className={fieldLabelClass}>
+                  {f.label}
+                </label>
+                <div className="relative">
+                  <select
+                    id={id}
+                    name={f.name}
+                    value={values[f.name]}
+                    onChange={(e) =>
+                      setValues((v) => ({ ...v, [f.name]: e.target.value }))
+                    }
+                    className={fieldControlClass}
+                  >
+                    {f.options.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6b6b6b]">
+                    <ChevronIcon />
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <button type="submit" className={btnClass}>
+          Get Recommendations <span aria-hidden="true">→</span>
+        </button>
+
+        <p className={cardNoteClass}>
+          <ShieldIcon />
+          No obligation. Just better gifting ideas.
+        </p>
+      </form>
     </div>
-  </div>
-);
+  );
+};
 
 export default BuildYourGiftCard;
