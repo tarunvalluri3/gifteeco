@@ -11,18 +11,43 @@ const NAV_LINKS = [
 
 const MOBILE_BREAKPOINT = 900;
 
-const ctaBase =
-  "inline-flex items-center justify-center gap-2 bg-[#1a1a1a] text-white rounded-full font-medium whitespace-nowrap transition duration-200 hover:opacity-90 hover:-translate-y-px";
+// Navbar is shared across every route; only the Home page ("/") gets the
+// petrol/charcoal/coral treatment so other (unchanged) pages keep their
+// original light nav styling.
+const ctaBase = (isHome) =>
+  `inline-flex items-center justify-center gap-2 rounded-full font-bold whitespace-nowrap transition duration-200 hover:opacity-90 hover:-translate-y-px ${
+    isHome ? "bg-[#E77C67] text-[#202326]" : "bg-[#1a1a1a] text-white"
+  }`;
 
-const desktopLinkClass = ({ isActive }) => `
+const desktopLinkClass = (isHome) => ({ isActive }) => `
   relative py-2 text-[0.85rem] font-medium transition-colors duration-200
-  after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-[#1a1a1a] after:transition-all after:duration-300
-  ${isActive ? "text-[#1a1a1a] after:w-full" : "text-[#4a4a4a] hover:text-[#1a1a1a] after:w-0 hover:after:w-full"}
+  after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:h-px after:transition-all after:duration-300
+  ${
+    isHome
+      ? `after:bg-[#E77C67] ${
+          isActive
+            ? "text-white after:w-full"
+            : "text-white/75 hover:text-white after:w-0 hover:after:w-full"
+        }`
+      : `after:bg-[#1a1a1a] ${
+          isActive
+            ? "text-[#1a1a1a] after:w-full"
+            : "text-[#4a4a4a] hover:text-[#1a1a1a] after:w-0 hover:after:w-full"
+        }`
+  }
 `;
 
-const mobileLinkClass = ({ isActive }) => `
+const mobileLinkClass = (isHome) => ({ isActive }) => `
   block text-[1.65rem] font-medium tracking-tight py-3 transition-colors duration-200
-  ${isActive ? "text-[#1a1a1a]" : "text-[#4a4a4a]"}
+  ${
+    isHome
+      ? isActive
+        ? "text-white"
+        : "text-white/70"
+      : isActive
+        ? "text-[#1a1a1a]"
+        : "text-[#4a4a4a]"
+  }
 `;
 
 const BrandMark = () => (
@@ -52,25 +77,28 @@ const BrandMark = () => (
   </span>
 );
 
-const HamburgerIcon = ({ open }) => (
-  <span className="relative block w-6 h-5" aria-hidden="true">
-    <span
-      className={`absolute left-0 h-[1.5px] w-6 bg-[#1a1a1a] rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
-      }`}
-    />
-    <span
-      className={`absolute left-0 h-[1.5px] w-6 bg-[#1a1a1a] rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        open ? "top-1/2 -translate-y-1/2 -rotate-45" : "top-[9px]"
-      }`}
-    />
-    <span
-      className={`absolute left-0 h-[1.5px] w-6 bg-[#1a1a1a] rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        open ? "top-1/2 opacity-0 -translate-y-1/2" : "top-[18px] opacity-100"
-      }`}
-    />
-  </span>
-);
+const HamburgerIcon = ({ open, isHome }) => {
+  const barClass = isHome ? "bg-white" : "bg-[#1a1a1a]";
+  return (
+    <span className="relative block w-6 h-5" aria-hidden="true">
+      <span
+        className={`absolute left-0 h-[1.5px] w-6 ${barClass} rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          open ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
+        }`}
+      />
+      <span
+        className={`absolute left-0 h-[1.5px] w-6 ${barClass} rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          open ? "top-1/2 -translate-y-1/2 -rotate-45" : "top-[9px]"
+        }`}
+      />
+      <span
+        className={`absolute left-0 h-[1.5px] w-6 ${barClass} rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          open ? "top-1/2 opacity-0 -translate-y-1/2" : "top-[18px] opacity-100"
+        }`}
+      />
+    </span>
+  );
+};
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -79,6 +107,7 @@ const Navbar = () => {
   const [lastPathname, setLastPathname] = useState(null);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const isHome = location.pathname === "/";
 
   if (location.pathname !== lastPathname) {
     setLastPathname(location.pathname);
@@ -118,8 +147,14 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300 ${
-        open ? "bg-[#f5f1ea]" : "bg-transparent"
-      } ${scrolled && !open ? "border-black/[0.07]" : "border-transparent"}`}
+        open ? (isHome ? "bg-[#202326]" : "bg-[#f5f1ea]") : "bg-transparent"
+      } ${
+        scrolled && !open
+          ? isHome
+            ? "border-white/10"
+            : "border-black/[0.07]"
+          : "border-transparent"
+      }`}
     >
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-[clamp(20px,5vw,90px)] max-[900px]:h-16">
         <Link
@@ -143,7 +178,7 @@ const Navbar = () => {
         <ul className="flex items-center gap-8 max-[900px]:hidden">
           {NAV_LINKS.map((link) => (
             <li key={link.to}>
-              <NavLink to={link.to} className={desktopLinkClass}>
+              <NavLink to={link.to} className={desktopLinkClass(isHome)}>
                 {link.label}
               </NavLink>
             </li>
@@ -153,7 +188,7 @@ const Navbar = () => {
         <div className="flex shrink-0 items-center gap-5">
           <Link
             to="/get-started"
-            className={`${ctaBase} px-5 py-[0.55rem] text-[0.82rem] max-[900px]:hidden`}
+            className={`${ctaBase(isHome)} px-5 py-[0.55rem] text-[0.82rem] max-[900px]:hidden`}
           >
             Get Started
           </Link>
@@ -165,7 +200,7 @@ const Navbar = () => {
             onClick={() => setOpen((v) => !v)}
             className="hidden max-[900px]:flex items-center justify-center -mr-1 h-9 w-9"
           >
-            <HamburgerIcon open={open} />
+            <HamburgerIcon open={open} isHome={isHome} />
           </button>
         </div>
       </div>
@@ -178,19 +213,25 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -12 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.26, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col overflow-y-auto bg-[#f5f1ea] [font-family:Inter,sans-serif] min-[901px]:hidden"
+            className={`fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col overflow-y-auto [font-family:Inter,sans-serif] min-[901px]:hidden ${
+              isHome ? "bg-[#202326]" : "bg-[#f5f1ea]"
+            }`}
           >
             <nav className="flex flex-col px-[clamp(20px,6vw,40px)] pt-6">
               {NAV_LINKS.map((link) => (
-                <NavLink key={link.to} to={link.to} className={mobileLinkClass}>
+                <NavLink key={link.to} to={link.to} className={mobileLinkClass(isHome)}>
                   {link.label}
                 </NavLink>
               ))}
             </nav>
-            <div className="mt-auto px-[clamp(20px,6vw,40px)] pb-10 pt-6 border-t border-black/[0.07]">
+            <div
+              className={`mt-auto px-[clamp(20px,6vw,40px)] pb-10 pt-6 border-t ${
+                isHome ? "border-white/10" : "border-black/[0.07]"
+              }`}
+            >
               <Link
                 to="/get-started"
-                className={`${ctaBase} w-full py-3 text-[0.95rem]`}
+                className={`${ctaBase(isHome)} w-full py-3 text-[0.95rem]`}
               >
                 Get Started
               </Link>

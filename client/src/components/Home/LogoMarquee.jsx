@@ -13,7 +13,7 @@ const LOGOS = [
 // looping seamlessly through a duplicated track.
 const SPEED_PX_PER_SEC = 24;
 
-const logoWordClass = "text-[#a9a49a] text-[1.05rem] whitespace-nowrap shrink-0";
+const logoWordClass = "text-[#9EB4B8] text-[1.05rem] whitespace-nowrap shrink-0";
 
 const LogoMarquee = () => {
   const trackRef = useRef(null);
@@ -52,6 +52,7 @@ const LogoMarquee = () => {
             key={`${logo.name}-${i}`}
             className={logoWordClass}
             style={logo.style}
+            aria-hidden={i >= LOGOS.length ? "true" : undefined}
           >
             {logo.name}
           </span>

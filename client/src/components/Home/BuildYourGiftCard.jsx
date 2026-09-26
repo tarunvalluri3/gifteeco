@@ -34,24 +34,24 @@ const DEFAULTS = {
 const cardZoneClass = "w-full [font-family:Inter,sans-serif]";
 
 const cardClass =
-  "bg-[#fffdfa] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] px-5 py-5 w-full";
+  "bg-[#202326] border border-white/[0.08] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-5 py-5 w-full";
 
-const cardTitleClass = "text-lg font-medium mb-1";
+const cardTitleClass = "text-lg font-medium mb-1 text-white";
 
-const cardSubClass = "text-[#6b6b6b] text-[0.68rem] mb-4";
+const cardSubClass = "text-[#9BA5A9] text-[0.68rem] mb-4";
 
 const fieldsClass = "flex flex-col gap-[0.68rem] mb-5";
 
-const fieldLabelClass = "block text-[0.6rem] text-[#6b6b6b] mb-1";
+const fieldLabelClass = "block text-[0.6rem] text-[#9BA5A9] mb-1";
 
 const fieldControlClass =
-  "block w-full appearance-none bg-transparent border border-[#e2ddd2] rounded-lg pl-3 pr-8 py-2 text-[0.74rem] text-[#1a1a1a] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6f1d2a]";
+  "block w-full appearance-none bg-[#2A2E32] border border-white/[0.10] rounded-lg pl-3 pr-8 py-2 pointer-coarse:min-h-11 text-[0.74rem] text-[#E5E8E9] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E77C67]";
 
 const btnClass =
-  "inline-flex items-center justify-center gap-[0.6rem] bg-[#1a1a1a] text-white rounded-full font-medium no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px px-[1.44rem] py-[0.76rem] text-[0.72rem] w-full";
+  "inline-flex items-center justify-center gap-[0.6rem] min-h-11 bg-[#E77C67] text-[#202326] rounded-full font-bold no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px px-[1.44rem] py-[0.76rem] text-[0.72rem] w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
 const cardNoteClass =
-  "flex items-center justify-center gap-1.5 text-[0.62rem] text-[#6b6b6b] mt-3";
+  "flex items-center justify-center gap-1.5 text-[0.62rem] text-[#9BA5A9] mt-3";
 
 const ChevronIcon = () => (
   <svg width="10" height="7" viewBox="0 0 12 8" fill="none" aria-hidden="true">
@@ -97,7 +97,7 @@ const BuildYourGiftCard = () => {
   return (
     <div className={cardZoneClass}>
       <form className={cardClass} onSubmit={handleSubmit}>
-        <h3 className={cardTitleClass}>Build your gift</h3>
+        <h2 className={cardTitleClass}>Build your gift</h2>
         <p className={cardSubClass}>
           Get personalized recommendations in seconds.
         </p>
@@ -126,7 +126,7 @@ const BuildYourGiftCard = () => {
                       </option>
                     ))}
                   </select>
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6b6b6b]">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9BA5A9]">
                     <ChevronIcon />
                   </span>
                 </div>

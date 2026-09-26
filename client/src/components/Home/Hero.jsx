@@ -83,7 +83,7 @@ const reducedProductVariants = {
 // Layout is a flow-based grid (no vh/vw-offset absolute positioning):
 // 1 column < 768px, 2 columns 768-1279px, 3 columns 1280px+.
 const heroSectionClass = `
-  relative flex flex-col bg-[#f5f1ea] text-[#1a1a1a] [font-family:Inter,sans-serif]
+  relative flex flex-col bg-[#164A5A] text-white [font-family:Inter,sans-serif]
   min-h-[max(720px,100svh)]
 `;
 
@@ -91,7 +91,7 @@ const heroGridClass = `
   flex-1 w-full max-w-[1600px] mx-auto grid grid-cols-1 gap-x-8 gap-y-10
   px-[clamp(20px,5.5vw,90px)] pt-24 pb-10
   max-md:pt-20
-  md:grid-cols-2 md:grid-rows-[1fr_auto] md:gap-y-6 md:pb-12
+  md:grid-cols-2 md:grid-rows-[1fr_auto] md:gap-y-12 md:pb-12
   xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,0.85fr)]
 `;
 
@@ -99,22 +99,22 @@ const contentZoneClass =
   "md:col-start-1 md:row-start-1 md:self-center max-w-[620px]";
 
 const eyebrowBase =
-  "text-[0.68rem] tracking-[0.18em] uppercase text-[#6b6b6b] font-medium";
+  "text-[0.68rem] tracking-[0.18em] uppercase text-[#B8CBCE] font-medium";
 
 const announcementPillClass =
-  "inline-flex items-center gap-3 rounded-[6px] border border-black/[0.10] bg-white/35 px-4 py-2.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-[#3f3b39] backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:border-[#6f1d2a]/30 hover:text-[#6f1d2a]";
+  "inline-flex items-center gap-3 min-h-11 rounded-[6px] border border-white/[0.16] bg-white/[0.08] px-4 py-2.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-px hover:border-[#E77C67]/50 hover:text-[#E77C67] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E77C67]";
 
-  const headlineClass = `
+const headlineClass = `
   font-medium text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.15] tracking-[-0.01em] mb-4
 `;
 
 const descClass =
-  "text-[0.95rem] leading-[1.6] text-[#6b6b6b] max-w-[30rem] mb-6";
+  "text-[0.95rem] leading-[1.6] text-[#B8CBCE] max-w-[30rem] mb-8";
 
 const ctasClass = "flex items-center gap-5 flex-wrap";
 
 const btnPrimaryBase =
-  "inline-flex items-center justify-center gap-[0.6rem] bg-[#1a1a1a] text-white rounded-full font-medium no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px";
+  "inline-flex items-center justify-center gap-[0.6rem] min-h-11 bg-[#E77C67] text-[#202326] rounded-full font-bold no-underline border-none cursor-pointer transition duration-200 whitespace-nowrap hover:opacity-[0.88] hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
 const productZoneClass =
   "relative isolate flex flex-col md:col-start-2 md:row-start-1 md:self-center";
@@ -126,7 +126,7 @@ const productFrameClass = `
 `;
 
 const sideStackClass = `
-  flex flex-col gap-5 w-full max-w-[352px]
+  flex flex-col gap-3 w-full max-w-[352px]
   md:col-start-2 md:row-start-2 md:justify-self-center
   xl:col-start-3 xl:row-start-1 xl:self-center xl:justify-self-end
 `;
@@ -137,7 +137,7 @@ const shadowClass =
   "absolute bottom-[4%] left-1/2 -translate-x-1/2 w-[46%] h-[34px] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.3),transparent_70%)] blur-[8px] z-0";
 
 const trustedZoneClass =
-  "max-w-[560px] md:col-start-1 md:row-start-2 md:self-end";
+  "max-w-[560px] max-md:mt-6 md:col-start-1 md:row-start-2 md:self-end";
 
 // Right-side animated use-case strip, aligned with BuildYourGiftCard below it.
 const USE_CASES = ["EMPLOYEES", "CLIENTS", "EVENTS", "FESTIVALS"];
@@ -146,21 +146,22 @@ const USE_CASE_INTERVAL_MS = 2600;
 const useCaseWrapClass = "w-full";
 
 const useCaseHeadingClass =
-  "text-[0.6rem] tracking-[0.2em] uppercase text-[#8a8a8a] font-medium mb-1.5";
+  "text-[0.6rem] tracking-[0.2em] uppercase text-[#B8CBCE] font-medium mb-1.5";
 
 const useCaseWordClass =
-  "text-[0.8rem] font-medium text-[#1a1a1a]";
+  "text-[0.8rem] font-medium text-white";
 
 const UseCaseStrip = () => {
   const shouldReduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
     const id = setInterval(() => {
       setActiveIndex((i) => (i + 1) % USE_CASES.length);
     }, USE_CASE_INTERVAL_MS);
     return () => clearInterval(id);
-  }, []);
+  }, [shouldReduceMotion]);
 
   return (
     <div className={useCaseWrapClass}>
@@ -213,97 +214,96 @@ const Hero = () => {
   return (
     <section className={heroSectionClass}>
       <div className={heroGridClass}>
-      <div className={contentZoneClass}>
-        <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <Link to="/brand-your-products" className={`${announcementPillClass} mb-5`}>
-            <span aria-hidden="true">🎁</span>
-            Personalize your gifts!
-            <span aria-hidden="true"></span>
-          </Link>
-        </motion.div>
-
-        <p className={`${eyebrowBase} mb-3`}>CORPORATE GIFTING</p>
-        <h1 className={headlineClass}>
-          Thoughtful gifts
-          <br />
-          for ambitious brands.
-        </h1>
-        <p className={descClass}>
-          Premium corporate gifting solutions designed to strengthen
-          relationships and inspire loyalty.
-        </p>
-
-        <div className={ctasClass}>
-          <Link
-            to="/products"
-            className={`${btnPrimaryBase} px-[1.3rem] py-[0.65rem] text-[0.8rem]`}
-          >
-            Explore Collection <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </div>
-
-      <div className={productZoneClass} {...pauseHandlers}>
-        <ProductAnnotation productId={active.id} />
-        <div className={productFrameClass}>
+        <div className={contentZoneClass}>
           <motion.div
-            className={shadowClass}
-            animate={
-              shouldReduceMotion
-                ? { opacity: 0.4 }
-                : { scaleX: [1, 1.08, 1], opacity: [0.35, 0.5, 0.35] }
-            }
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active.id}
-              className="relative z-[1] h-full flex items-center"
-              variants={
-                shouldReduceMotion
-                  ? reducedProductVariants
-                  : getProductVariants(active.tilt)
-              }
-              initial="initial"
-              animate="animate"
-              exit="exit"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Link to="/brand-your-products" className={`${announcementPillClass} mb-6`}>
+              <span aria-hidden="true">🎁</span>
+              Personalize your gifts!
+            </Link>
+          </motion.div>
+
+          <p className={`${eyebrowBase} mb-3`}>CORPORATE GIFTING</p>
+          <h1 className={headlineClass}>
+            Thoughtful gifts
+            <br />
+            for ambitious brands.
+          </h1>
+          <p className={descClass}>
+            Premium corporate gifting solutions designed to strengthen
+            relationships and inspire loyalty.
+          </p>
+
+          <div className={ctasClass}>
+            <Link
+              to="/products"
+              className={`${btnPrimaryBase} px-[1.3rem] py-[0.65rem] text-[0.8rem]`}
             >
-              <img
-                src={active.src}
-                alt={active.alt}
-                width={active.width}
-                height={active.height}
-                loading="eager"
-                fetchPriority="high"
-                className={`${productImgBase} ${active.imgSize} ${
-                  active.blend ? "mix-blend-multiply" : ""
-                }`}
-              />
-            </motion.div>
-          </AnimatePresence>
+              Explore Collection <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className={sideStackClass}>
-        <UseCaseStrip />
-        <BuildYourGiftCard />
-      </div>
+        <div className={productZoneClass} {...pauseHandlers}>
+          <ProductAnnotation productId={active.id} />
+          <div className={productFrameClass}>
+            <motion.div
+              className={shadowClass}
+              animate={
+                shouldReduceMotion
+                  ? { opacity: 0.4 }
+                  : { scaleX: [1, 1.08, 1], opacity: [0.35, 0.5, 0.35] }
+              }
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: "mirror",
+                ease: "easeInOut",
+              }}
+            />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.id}
+                className="relative z-[1] h-full flex items-center"
+                variants={
+                  shouldReduceMotion
+                    ? reducedProductVariants
+                    : getProductVariants(active.tilt)
+                }
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <img
+                  src={active.src}
+                  alt={active.alt}
+                  width={active.width}
+                  height={active.height}
+                  loading="eager"
+                  fetchPriority={active.id === PRODUCTS[0].id ? "high" : "auto"}
+                  className={`${productImgBase} ${active.imgSize} ${
+                    active.blend ? "mix-blend-multiply" : ""
+                  }`}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
 
-      <div className={trustedZoneClass}>
-        <p className={`${eyebrowBase} mb-[1.1rem]`}>
-          TRUSTED BY MODERN BUSINESSES
-        </p>
-        <LogoMarquee />
-      </div>
+        <div className={sideStackClass}>
+          <UseCaseStrip />
+          <BuildYourGiftCard />
+        </div>
+
+        <div className={trustedZoneClass}>
+          <p className={`${eyebrowBase} mb-4`}>
+            TRUSTED BY MODERN BUSINESSES
+          </p>
+          <LogoMarquee />
+        </div>
       </div>
     </section>
   );

@@ -29,14 +29,14 @@ const wrapClass = "self-start pointer-events-none mb-2";
 
 const ruleRowClass = "flex items-center gap-2 mb-1.5";
 
-const ruleClass = "w-6 h-px bg-[#1a1a1a]/25 shrink-0";
+const ruleClass = "w-6 h-px bg-[#E77C67]/70 shrink-0";
 
 const categoryClass =
-  "text-[0.68rem] tracking-[0.18em] uppercase text-[#6b6b6b] font-medium";
+  "text-[0.68rem] tracking-[0.18em] uppercase text-[#B8CBCE] font-medium";
 
 const linesWrapClass = "pl-8";
 
-const lineClass = "text-[0.82rem] leading-[1.4] text-[#1a1a1a]";
+const lineClass = "text-[0.82rem] leading-[1.4] text-white";
 
 const textVariants = (shouldReduceMotion) => ({
   initial: shouldReduceMotion ? false : { opacity: 0, y: 4 },
