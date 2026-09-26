@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import BuildYourGiftCard from "./BuildYourGiftCard";
 import LogoMarquee from "./LogoMarquee";
 import ProductAnnotation from "./ProductAnnotation";
+import GiftIconReel from "./GiftIconReel";
 
 const PRODUCTS = [
   {
@@ -185,6 +186,7 @@ const UseCaseStrip = () => {
 const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [exploreReelPaused, setExploreReelPaused] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -241,8 +243,12 @@ const Hero = () => {
             <Link
               to="/products"
               className={`${btnPrimaryBase} px-[1.3rem] py-[0.65rem] text-[0.8rem]`}
+              onMouseEnter={() => setExploreReelPaused(true)}
+              onMouseLeave={() => setExploreReelPaused(false)}
+              onFocus={() => setExploreReelPaused(true)}
+              onBlur={() => setExploreReelPaused(false)}
             >
-              Explore Collection <span aria-hidden="true">→</span>
+              Explore Collection <GiftIconReel isPaused={exploreReelPaused} phaseOffset={0} />
             </Link>
           </div>
         </div>

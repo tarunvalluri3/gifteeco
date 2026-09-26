@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GiftIconReel from "./GiftIconReel";
 
 const FIELDS = [
   {
@@ -85,6 +86,7 @@ const BuildYourGiftCard = () => {
   const navigate = useNavigate();
   const idPrefix = useId();
   const [values, setValues] = useState(DEFAULTS);
+  const [reelPaused, setReelPaused] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -135,8 +137,15 @@ const BuildYourGiftCard = () => {
           })}
         </div>
 
-        <button type="submit" className={btnClass}>
-          Get Recommendations <span aria-hidden="true">→</span>
+        <button
+          type="submit"
+          className={btnClass}
+          onMouseEnter={() => setReelPaused(true)}
+          onMouseLeave={() => setReelPaused(false)}
+          onFocus={() => setReelPaused(true)}
+          onBlur={() => setReelPaused(false)}
+        >
+          Get Recommendations <GiftIconReel isPaused={reelPaused} phaseOffset={64} />
         </button>
 
         <p className={cardNoteClass}>
